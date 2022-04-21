@@ -40,3 +40,32 @@ func intersect(num1, num2 []int) []int {
 	}
 	return num2[0:k]
 }
+
+/*
+进阶：num1 = [1,2,3,4,4,13]，num2 = [1,2,3,9,10]
+两个排好序的数组
+*/
+/*
+解题步骤:利用双指针
+1.首先将利用两个指针分别指向两个数组
+2.if 指向的两个元素相同
+	两个指针同时向后移
+  elif 指向的两个元素不相同
+	将小的指针向后移
+*/
+func intersectAdvanced(num1, num2 []int) []int {
+	i, j, k := 0, 0, 0
+	for i < len(num1) && j < len(num2) {
+		if num1[i] == num2[j] {
+			num1[k] = num1[i]
+			i++
+			j++
+			k++
+		} else if num1[i] < num2[j] {
+			i++
+		} else {
+			j++
+		}
+	}
+	return num1[0:k]
+}

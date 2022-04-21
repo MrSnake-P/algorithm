@@ -23,10 +23,26 @@ func TestIntersect(t *testing.T) {
 			expected: []int{4, 9},
 		},
 	}
+	casesSorted := []struct {
+		num1     []int
+		num2     []int
+		expected []int
+	}{
+		{
+			num1:     []int{1, 2, 3, 4, 4, 13},
+			num2:     []int{1, 2, 3, 9, 10},
+			expected: []int{1, 2, 3},
+		},
+	}
+
 	for _, v := range cases {
 		result := intersect(v.num1, v.num2)
 		// 对结果进行一个排序
 		sort.Ints(result)
+		require.Equal(t, v.expected, result)
+	}
+	for _, v := range casesSorted {
+		result := intersectAdvanced(v.num1, v.num2)
 		require.Equal(t, v.expected, result)
 	}
 }
