@@ -44,3 +44,7 @@ func removeNthFromEnd(head *ListNode, n int) *ListNode {
 	}
 	return guard.Next
 }
+
+/*
+进阶：只遍历一次
+*/
