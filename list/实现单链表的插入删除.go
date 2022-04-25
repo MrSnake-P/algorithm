@@ -19,12 +19,26 @@ type Guard struct {
 	len  int
 }
 
-func NewListNode() *Guard {
+func NewNilListNode() *Guard {
 	// 初始化头尾都指向空节点
 	return &Guard{
 		nil,
 		nil,
 		0,
+	}
+}
+
+func NewListNode(m *ListNode) *Guard {
+	cur := m
+	i := 1
+	for cur.Next != nil {
+		cur = cur.Next
+		i++
+	}
+	return &Guard{
+		head: m,
+		tail: cur,
+		len:  i,
 	}
 }
 
@@ -79,6 +93,70 @@ func (g *Guard) MiddleInterpolation(m *ListNode, position int) error {
 		m.Next = cur.Next
 		cur.Next = m
 		g.len++
+		return nil
+	}
+}
+
+// 删除头节点
+func (g *Guard) DeleteHeadNode() error {
+	if g.len == 0 {
+		return fmt.Errorf("no nodes exists")
+	}
+	// 如果只有一个节点，将头尾指向 null
+	if g.len == 1 {
+		g.head = nil
+		g.tail = nil
+		g.len--
+	} else {
+		g.head = g.head.Next
+		g.len--
+	}
+
+	return nil
+}
+
+func (g *Guard) DeleteTailNode() error {
+	if g.len == 0 {
+		return fmt.Errorf("no nodes exists")
+	}
+	// 如果只有一个节点，将头尾指向 null
+	if g.len == 1 {
+		g.head = nil
+		g.tail = nil
+		g.len--
+	} else {
+		cur := g.head
+		for i := 1; i < g.len-1; i++ {
+			cur = cur.Next
+		}
+		// 需要先找到尾几点的前一个节点
+		pre := cur
+		pre.Next = nil
+		g.tail = pre
+		g.len--
+	}
+
+	return nil
+}
+
+func (g *Guard) DeleteNode(position int) error {
+	if g.len == 0 || position == 0 {
+		return fmt.Errorf("no nodes exists")
+	} else if g.len < position {
+		return fmt.Errorf("out of index")
+	} else if position == 1 {
+		return g.DeleteHeadNode()
+	} else if g.len == position {
+		return g.DeleteTailNode()
+	} else {
+		cur := g.head
+		for i := 1; i < position-1; i++ {
+			// 找到前一个节点
+			cur = cur.Next
+		}
+		d := cur.Next
+		cur.Next = d.Next
+		g.len--
 		return nil
 	}
 }
